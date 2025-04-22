@@ -1,0 +1,66 @@
+import { Meta } from '@storybook/blocks';
+
+<Meta title="Introduction" />
+
+# RidePeek Dealership Catalog UI Components
+
+Welcome to the RidePeek Dealership Catalog component library. This Storybook showcases all the UI components used in the application.
+
+## Component Organization
+
+Components are organized by category:
+
+- **UI**: Basic UI components that form the foundation of the application interface
+- **Features**: (Coming soon) More complex components specific to application features
+
+## Using the Components
+
+All components are located in the `src/components` directory in the codebase. The stories are organized in a separate `src/stories` directory to keep the component files clean.
+
+### Component Import Example
+
+```tsx
+// Import UI components
+import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
+
+// Usage
+export default function MyComponent() {
+  return (
+    <Card>
+      <h2>My Component</h2>
+      <Button>Click Me</Button>
+    </Card>
+  );
+}
+```
+
+## Creating New Stories
+
+To create a new story:
+
+1. Create a file with the `.stories.tsx` extension in the appropriate directory under `src/stories`
+2. Import the component from the components directory
+3. Define the story metadata and component variations
+
+Example:
+
+```tsx
+import type { Meta, StoryObj } from "@storybook/react";
+import { YourComponent } from "../../components/ui/your-component";
+
+const meta: Meta<typeof YourComponent> = {
+  component: YourComponent,
+  title: "UI/YourComponent",
+  tags: ["autodocs"],
+};
+
+export default meta;
+type Story = StoryObj<typeof YourComponent>;
+
+export const Default: Story = {
+  args: {
+    // Component props
+  },
+};
+``` 
