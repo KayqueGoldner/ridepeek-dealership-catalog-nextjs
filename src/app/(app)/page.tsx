@@ -2,8 +2,7 @@ import { Suspense } from "react";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 import { getQueryClient, trpc } from "@/trpc/server";
-
-import { Test } from "./test";
+import { HomeView } from "@/modules/home/ui/views/home-view";
 
 export default function Home() {
   const queryClient = getQueryClient();
@@ -13,9 +12,7 @@ export default function Home() {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Suspense fallback={<div>Loading...</div>}>
-        <div className="h-[200vh] bg-cyan-900">
-          <Test />
-        </div>
+        <HomeView />
       </Suspense>
     </HydrationBoundary>
   );
