@@ -8,8 +8,11 @@
     "start": "next start",
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "generate:types": "payload generate:types",
+    "db:fresh": "payload migrate:fresh"
   },
+  "type": "module",
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
     "@payloadcms/db-mongodb": "^3.35.1",
