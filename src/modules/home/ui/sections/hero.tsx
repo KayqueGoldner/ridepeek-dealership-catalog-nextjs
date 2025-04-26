@@ -39,7 +39,7 @@ export const Hero = () => {
   };
 
   return (
-    <section className="h-screen bg-cyan-900">
+    <section className="relative h-96 bg-cyan-900 md:h-screen">
       <Slider
         items={items}
         renderItem={(item) => <SliderItem item={item} />}

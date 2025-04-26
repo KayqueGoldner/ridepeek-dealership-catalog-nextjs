@@ -79,7 +79,7 @@ export const Slider = <T,>({
           className={cn("embla__viewport overflow-hidden", className)}
           ref={emblaRef}
         >
-          <div className="embla__container flex">
+          <div className="embla__container flex size-full">
             {items.map((item) => (
               <div
                 key={getItemId(item)}
