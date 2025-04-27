@@ -7,13 +7,14 @@ import { useSlider } from "@/hooks/use-carousel-context";
 import { Button, buttonVariants } from "@/components/ui/button";
 
 interface SliderArrowsProps extends React.HTMLAttributes<HTMLDivElement> {
+  children?: React.ReactNode;
   variant?: VariantProps<typeof buttonVariants>["variant"];
   size?: VariantProps<typeof buttonVariants>["size"];
   buttonClassName?: string;
 }
 
 export const SliderArrows = React.forwardRef<HTMLDivElement, SliderArrowsProps>(
-  ({ className, variant, size, buttonClassName, ...props }, ref) => {
+  ({ className, variant, size, buttonClassName, children, ...props }, ref) => {
     const { canScrollPrev, canScrollNext, scrollPrev, scrollNext } =
       useSlider();
 
@@ -36,6 +37,7 @@ export const SliderArrows = React.forwardRef<HTMLDivElement, SliderArrowsProps>(
         >
           <ChevronLeftIcon />
         </Button>
+        {children}
         <Button
           variant={variant}
           size={size}
