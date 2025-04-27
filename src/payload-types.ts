@@ -70,6 +70,7 @@ export interface Config {
     users: User;
     media: Media;
     hero: Hero;
+    cars: Car;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -79,6 +80,7 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     hero: HeroSelect<false> | HeroSelect<true>;
+    cars: CarsSelect<false> | CarsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -139,6 +141,8 @@ export interface User {
 export interface Media {
   id: string;
   alt: string;
+  fileId?: string | null;
+  _key?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -172,6 +176,108 @@ export interface Hero {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cars".
+ */
+export interface Car {
+  id: string;
+  name: string;
+  /**
+   * The manufacturer of the car (e.g., Toyota, Ford, BMW)
+   */
+  make: string;
+  /**
+   * The model of the car (e.g., Camry, F-150, 3 Series)
+   */
+  model: string;
+  /**
+   * Year the car was manufactured
+   */
+  year: number;
+  /**
+   * Price in dollars (USD)
+   */
+  price: number;
+  condition: 'new' | 'used' | 'certified';
+  /**
+   * Odometer reading in miles
+   */
+  mileage?: number | null;
+  /**
+   * Notable features of the vehicle
+   */
+  features?:
+    | {
+        feature: string;
+        id?: string | null;
+      }[]
+    | null;
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Vehicle images
+   */
+  images?:
+    | {
+        image: string | Media;
+        caption?: string | null;
+        /**
+         * Use this image as the main image for the vehicle
+         */
+        primary?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  specifications?: {
+    /**
+     * e.g., V6, 4-cylinder, Electric
+     */
+    engineType?: string | null;
+    transmission?: ('automatic' | 'manual' | 'cvt' | 'electric') | null;
+    fuelType?: ('gasoline' | 'diesel' | 'electric' | 'hybrid' | 'plugin_hybrid') | null;
+    /**
+     * Fuel economy in miles per gallon
+     */
+    mpg?: {
+      city?: number | null;
+      highway?: number | null;
+      combined?: number | null;
+    };
+    /**
+     * Range in miles (for electric vehicles)
+     */
+    electricRange?: number | null;
+    color?: {
+      exterior?: string | null;
+      interior?: string | null;
+    };
+  };
+  availability: 'in_stock' | 'on_order' | 'sold';
+  /**
+   * Vehicle Identification Number
+   */
+  vin?: string | null;
+  /**
+   * Feature this vehicle on the homepage
+   */
+  featured?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -188,6 +294,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'hero';
         value: string | Hero;
+      } | null)
+    | ({
+        relationTo: 'cars';
+        value: string | Car;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -252,6 +362,8 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  fileId?: T;
+  _key?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -279,6 +391,60 @@ export interface HeroSelect<T extends boolean = true> {
         url?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "cars_select".
+ */
+export interface CarsSelect<T extends boolean = true> {
+  name?: T;
+  make?: T;
+  model?: T;
+  year?: T;
+  price?: T;
+  condition?: T;
+  mileage?: T;
+  features?:
+    | T
+    | {
+        feature?: T;
+        id?: T;
+      };
+  description?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        primary?: T;
+        id?: T;
+      };
+  specifications?:
+    | T
+    | {
+        engineType?: T;
+        transmission?: T;
+        fuelType?: T;
+        mpg?:
+          | T
+          | {
+              city?: T;
+              highway?: T;
+              combined?: T;
+            };
+        electricRange?: T;
+        color?:
+          | T
+          | {
+              exterior?: T;
+              interior?: T;
+            };
+      };
+  availability?: T;
+  vin?: T;
+  featured?: T;
   updatedAt?: T;
   createdAt?: T;
 }

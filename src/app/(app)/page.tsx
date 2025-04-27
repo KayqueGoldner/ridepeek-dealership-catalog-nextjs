@@ -8,6 +8,7 @@ export default function Home() {
   const queryClient = getQueryClient();
 
   void queryClient.prefetchQuery(trpc.hello.queryOptions({ text: "world" }));
+  void queryClient.prefetchQuery(trpc.home.getCars.queryOptions());
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

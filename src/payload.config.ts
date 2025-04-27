@@ -6,10 +6,12 @@ import path from "path";
 import { buildConfig } from "payload";
 import { fileURLToPath } from "url";
 import sharp from "sharp";
+import { uploadthingStorage } from "@payloadcms/storage-uploadthing";
 
 import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
 import { Hero } from "./collections/Hero";
+import { Cars } from "./collections/Cars";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -21,7 +23,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Hero],
+  collections: [Users, Media, Hero, Cars],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
@@ -32,7 +34,18 @@ export default buildConfig({
   }),
   sharp,
   plugins: [
-    payloadCloudPlugin(),
+    payloadCloudPlugin({
+      storage: false,
+    }),
+    uploadthingStorage({
+      collections: {
+        media: true,
+      },
+      options: {
+        token: process.env.UPLOADTHING_TOKEN || "", // UploadThing API token
+        acl: "public-read", // Make files publicly accessible
+      },
+    }),
     // storage-adapter-placeholder
   ],
 });

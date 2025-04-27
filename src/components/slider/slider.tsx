@@ -1,5 +1,6 @@
 import useEmblaCarousel from "embla-carousel-react";
 import React, { useState, useEffect, useCallback } from "react";
+import { EmblaOptionsType } from "embla-carousel";
 
 import { cn } from "@/lib/utils";
 import { SliderContext } from "@/hooks/use-carousel-context";
@@ -10,6 +11,8 @@ interface SliderProps<T> extends React.HTMLAttributes<HTMLDivElement> {
   getItemId: (item: T) => string | number;
   getItemHeight?: (item: T) => number;
   containerClassName?: string;
+  itemClassName?: string;
+  emblaOptions?: EmblaOptionsType;
 }
 
 export const Slider = <T,>({
@@ -19,9 +22,11 @@ export const Slider = <T,>({
   containerClassName,
   className,
   children,
+  emblaOptions = { loop: true },
+  itemClassName,
   ...props
 }: SliderProps<T> & { children?: React.ReactNode }) => {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true });
+  const [emblaRef, emblaApi] = useEmblaCarousel(emblaOptions);
   const [prevBtnDisabled, setPrevBtnDisabled] = useState(true);
   const [nextBtnDisabled, setNextBtnDisabled] = useState(true);
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -74,16 +79,24 @@ export const Slider = <T,>({
 
   return (
     <SliderContext.Provider value={contextValue}>
-      <div className={cn("embla", containerClassName)} {...props}>
+      <div className="embla size-full" {...props}>
         <div
           className={cn("embla__viewport overflow-hidden", className)}
           ref={emblaRef}
         >
-          <div className="embla__container flex size-full">
+          <div
+            className={cn(
+              "embla__container flex size-full",
+              containerClassName,
+            )}
+          >
             {items.map((item) => (
               <div
                 key={getItemId(item)}
-                className="embla__slide min-w-0 shrink-0 grow-0 basis-full"
+                className={cn(
+                  "embla__slide min-w-0 shrink-0 grow-0 basis-full",
+                  itemClassName,
+                )}
               >
                 {renderItem(item)}
               </div>
