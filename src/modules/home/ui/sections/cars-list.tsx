@@ -12,8 +12,6 @@ interface CarsListProps {
 }
 
 export const CarsList = ({ cars, isLoading }: CarsListProps) => {
-  const cloneList = [...cars, ...cars];
-
   const generateRandomId = () => {
     return Math.random().toString(36).substring(2, 15);
   };
@@ -50,7 +48,7 @@ export const CarsList = ({ cars, isLoading }: CarsListProps) => {
     <section className="relative mt-20 overflow-hidden">
       <h1 className="mb-10 pl-10 text-3xl font-bold">Cars</h1>
       <Slider
-        items={cloneList}
+        items={cars}
         renderItem={(item) => <CarCard car={item} />}
         getItemId={(item) => generateRandomId()}
         emblaOptions={{ loop: false, containScroll: false }}

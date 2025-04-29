@@ -71,6 +71,7 @@ export interface Config {
     media: Media;
     hero: Hero;
     cars: Car;
+    manufacturers: Manufacturer;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -81,6 +82,7 @@ export interface Config {
     media: MediaSelect<false> | MediaSelect<true>;
     hero: HeroSelect<false> | HeroSelect<true>;
     cars: CarsSelect<false> | CarsSelect<true>;
+    manufacturers: ManufacturersSelect<false> | ManufacturersSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -182,9 +184,12 @@ export interface Car {
   id: string;
   name: string;
   /**
-   * The manufacturer of the car (e.g., Toyota, Ford, BMW)
+   * Select an existing manufacturer or create a new one
    */
-  make: string;
+  make: {
+    relationTo: 'manufacturers';
+    value: string | Manufacturer;
+  };
   /**
    * The model of the car (e.g., Camry, F-150, 3 Series)
    */
@@ -278,6 +283,45 @@ export interface Car {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "manufacturers".
+ */
+export interface Manufacturer {
+  id: string;
+  /**
+   * The name of the manufacturer (e.g., Toyota, Ford, BMW)
+   */
+  name: string;
+  /**
+   * The country of origin for the manufacturer
+   */
+  country?: string | null;
+  /**
+   * The manufacturer's logo
+   */
+  logo?: (string | null) | Media;
+  /**
+   * A brief description of the manufacturer
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -298,6 +342,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'cars';
         value: string | Car;
+      } | null)
+    | ({
+        relationTo: 'manufacturers';
+        value: string | Manufacturer;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -445,6 +493,18 @@ export interface CarsSelect<T extends boolean = true> {
   availability?: T;
   vin?: T;
   featured?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "manufacturers_select".
+ */
+export interface ManufacturersSelect<T extends boolean = true> {
+  name?: T;
+  country?: T;
+  logo?: T;
+  description?: T;
   updatedAt?: T;
   createdAt?: T;
 }
