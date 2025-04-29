@@ -17,10 +17,13 @@ export const Cars: CollectionConfig = {
     },
     {
       name: "make",
-      type: "text",
+      type: "relationship",
+      relationTo: ["manufacturers"],
+      hasMany: false,
       required: true,
       admin: {
-        description: "The manufacturer of the car (e.g., Toyota, Ford, BMW)",
+        description: "Select an existing manufacturer or create a new one",
+        allowCreate: true,
       },
     },
     {
