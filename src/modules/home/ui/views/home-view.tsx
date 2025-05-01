@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 
 import { useTRPC } from "@/trpc/client";
 
 import { Hero } from "../sections/hero";
 import { SearchBar } from "../sections/search-bar";
 import { CarsList } from "../sections/cars-list";
+import { BikesList } from "../sections/bikes-list";
 
 export const HomeView = () => {
   const [isMounted, setIsMounted] = useState(false);
@@ -17,8 +18,11 @@ export const HomeView = () => {
   }, []);
 
   const trpc = useTRPC();
-  const { data: cars, isLoading: carsLoading } = useQuery(
+  const { data: cars, isLoading: carsLoading } = useSuspenseQuery(
     trpc.home.getCars.queryOptions(),
+  );
+  const { data: bikes, isLoading: bikesLoading } = useSuspenseQuery(
+    trpc.home.getBikes.queryOptions(),
   );
 
   return (
@@ -26,6 +30,10 @@ export const HomeView = () => {
       <Hero />
       <SearchBar />
       <CarsList cars={cars?.docs || []} isLoading={carsLoading || !isMounted} />
+      <BikesList
+        bikes={bikes?.docs || []}
+        isLoading={bikesLoading || !isMounted}
+      />
     </main>
   );
 };

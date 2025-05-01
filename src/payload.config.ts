@@ -13,6 +13,7 @@ import { Media } from "./collections/Media";
 import { Hero } from "./collections/Hero";
 import { Cars } from "./collections/Cars";
 import { Manufacturers } from "./collections/Manufacturers";
+import { Motorcycles } from "./collections/Motorcycles";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -24,7 +25,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Hero, Cars, Manufacturers],
+  collections: [Users, Media, Hero, Cars, Manufacturers, Motorcycles],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {
