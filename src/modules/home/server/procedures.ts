@@ -9,4 +9,12 @@ export const homeRouter = createTRPCRouter({
 
     return cars;
   }),
+  getBikes: baseProcedure.query(async ({ ctx }) => {
+    const bikes = await ctx.payload.find({
+      collection: "motorcycles",
+      limit: 5,
+    });
+
+    return bikes;
+  }),
 });

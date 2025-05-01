@@ -4,16 +4,16 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { Slider, SliderArrows, SliderCount } from "@/components/slider";
-import { Car } from "@/payload-types";
+import { Motorcycle } from "@/payload-types";
 import { Skeleton } from "@/components/ui/skeleton";
 import { InteractiveHoverButton } from "@/components/interactive-hover-button";
 
-interface CarsListProps {
-  cars: Car[];
+interface BikesListProps {
+  bikes: Motorcycle[];
   isLoading: boolean;
 }
 
-export const CarsList = ({ cars, isLoading }: CarsListProps) => {
+export const BikesList = ({ bikes, isLoading }: BikesListProps) => {
   const generateRandomId = () => {
     return Math.random().toString(36).substring(2, 15);
   };
@@ -25,8 +25,8 @@ export const CarsList = ({ cars, isLoading }: CarsListProps) => {
 
     return (
       <section className="relative mt-20 overflow-hidden">
-        <div className="flex items-center justify-between">
-          <h1 className="mb-10 pl-10 text-3xl font-bold">Cars</h1>
+        <div className="flex items-center justify-between px-10 py-5">
+          <h1 className="text-3xl font-bold">Bikes</h1>
           <InteractiveHoverButton>View all</InteractiveHoverButton>
         </div>
         <Slider
@@ -52,14 +52,14 @@ export const CarsList = ({ cars, isLoading }: CarsListProps) => {
   return (
     <section className="relative mt-20 overflow-hidden">
       <div className="flex items-center justify-between px-10 py-5">
-        <h1 className="text-3xl font-bold">Cars</h1>
-        <Link href="/cars">
+        <h1 className="text-3xl font-bold">Bikes</h1>
+        <Link href="/bikes">
           <InteractiveHoverButton>View all</InteractiveHoverButton>
         </Link>
       </div>
       <Slider
-        items={cars}
-        renderItem={(item) => <CarCard car={item} />}
+        items={bikes}
+        renderItem={(item) => <BikeCard bike={item} />}
         getItemId={(item) => generateRandomId()}
         emblaOptions={{ loop: false, containScroll: false }}
         containerClassName="gap-10 transition-all duration-500"
@@ -77,23 +77,23 @@ export const CarsList = ({ cars, isLoading }: CarsListProps) => {
   );
 };
 
-const CarCard = ({ car }: { car: Car }) => {
+const BikeCard = ({ bike }: { bike: Motorcycle }) => {
   const image =
-    typeof car.images?.[0]?.image === "string"
-      ? car.images?.[0]?.image
-      : car.images?.[0]?.image?.url;
+    typeof bike.images?.[0]?.image === "string"
+      ? bike.images?.[0]?.image
+      : bike.images?.[0]?.image?.url;
 
   return (
     <div className="size-full">
       <Image
         src={image || ""}
-        alt={car.images?.[0]?.caption || ""}
+        alt={bike.images?.[0]?.caption || ""}
         width={760}
         height={760}
         className="aspect-video w-full object-cover"
       />
       <div className="py-5 text-center">
-        <h1 className="text-xl font-bold">{car.name}</h1>
+        <h1 className="text-xl font-bold">{bike.name}</h1>
       </div>
     </div>
   );

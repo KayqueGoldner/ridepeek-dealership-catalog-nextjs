@@ -9,6 +9,7 @@ export default function Home() {
 
   void queryClient.prefetchQuery(trpc.hello.queryOptions({ text: "world" }));
   void queryClient.prefetchQuery(trpc.home.getCars.queryOptions());
+  void queryClient.prefetchQuery(trpc.home.getBikes.queryOptions());
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

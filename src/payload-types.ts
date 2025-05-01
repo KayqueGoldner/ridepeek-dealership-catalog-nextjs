@@ -72,6 +72,7 @@ export interface Config {
     hero: Hero;
     cars: Car;
     manufacturers: Manufacturer;
+    motorcycles: Motorcycle;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -83,6 +84,7 @@ export interface Config {
     hero: HeroSelect<false> | HeroSelect<true>;
     cars: CarsSelect<false> | CarsSelect<true>;
     manufacturers: ManufacturersSelect<false> | ManufacturersSelect<true>;
+    motorcycles: MotorcyclesSelect<false> | MotorcyclesSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -322,6 +324,124 @@ export interface Manufacturer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "motorcycles".
+ */
+export interface Motorcycle {
+  id: string;
+  name: string;
+  /**
+   * Select an existing manufacturer or create a new one
+   */
+  manufacturer: {
+    relationTo: 'manufacturers';
+    value: string | Manufacturer;
+  };
+  description: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * Year the motorcycle was manufactured
+   */
+  year: number;
+  /**
+   * Price in dollars (USD)
+   */
+  price: number;
+  featured?: boolean | null;
+  hidden?: boolean | null;
+  /**
+   * Select the condition of the motorcycle
+   */
+  condition: 'new' | 'used' | 'certified' | 'custom';
+  /**
+   * Enter a custom condition
+   */
+  customCondition?: string | null;
+  /**
+   * Odometer reading in miles
+   */
+  mileage?: number | null;
+  /**
+   * Select the engine type
+   */
+  engineType: '2-stroke' | '4-stroke' | 'electric' | 'hybrid' | 'custom';
+  /**
+   * Enter a custom engine type if 'Custom...' was selected above
+   */
+  customEngineType?: string | null;
+  /**
+   * Engine displacement in cubic centimeters
+   */
+  displacement?: number | null;
+  /**
+   * Select the transmission type
+   */
+  transmission: 'manual' | 'automatic' | 'semi-automatic' | 'cvt' | 'direct-drive' | 'custom';
+  /**
+   * Enter a custom transmission type if 'Custom...' was selected above
+   */
+  customTransmission?: string | null;
+  weight: number;
+  /**
+   * Fuel capacity in liters
+   */
+  fuelCapacity?: number | null;
+  /**
+   * Battery capacity in kWh
+   */
+  batteryCapacity?: number | null;
+  /**
+   * Select the category of the motorcycle
+   */
+  category:
+    | 'sport'
+    | 'cruiser'
+    | 'touring'
+    | 'adventure'
+    | 'naked'
+    | 'enduro'
+    | 'motocross'
+    | 'scooter'
+    | 'standard'
+    | 'custom'
+    | 'supermoto'
+    | 'dual-sport'
+    | 'dirt-bike'
+    | 'custom-category';
+  /**
+   * Enter a custom category if 'Custom...' was selected above
+   */
+  customCategory?: string | null;
+  colors: {
+    color: string;
+    id?: string | null;
+  }[];
+  images: {
+    image: string | Media;
+    caption?: string | null;
+    /**
+     * Use this image as the main image for the motorcycle
+     */
+    primary?: boolean | null;
+    id?: string | null;
+  }[];
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -346,6 +466,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'manufacturers';
         value: string | Manufacturer;
+      } | null)
+    | ({
+        relationTo: 'motorcycles';
+        value: string | Motorcycle;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -505,6 +629,48 @@ export interface ManufacturersSelect<T extends boolean = true> {
   country?: T;
   logo?: T;
   description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "motorcycles_select".
+ */
+export interface MotorcyclesSelect<T extends boolean = true> {
+  name?: T;
+  manufacturer?: T;
+  description?: T;
+  year?: T;
+  price?: T;
+  featured?: T;
+  hidden?: T;
+  condition?: T;
+  customCondition?: T;
+  mileage?: T;
+  engineType?: T;
+  customEngineType?: T;
+  displacement?: T;
+  transmission?: T;
+  customTransmission?: T;
+  weight?: T;
+  fuelCapacity?: T;
+  batteryCapacity?: T;
+  category?: T;
+  customCategory?: T;
+  colors?:
+    | T
+    | {
+        color?: T;
+        id?: T;
+      };
+  images?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        primary?: T;
+        id?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
