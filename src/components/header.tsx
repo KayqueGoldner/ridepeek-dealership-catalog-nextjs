@@ -17,18 +17,22 @@ const navItems = [
   {
     label: "Home",
     href: "/",
+    scrollEffect: true,
   },
   {
     label: "Cars",
     href: "/cars",
+    scrollEffect: false,
   },
   {
     label: "Bikes",
     href: "/bikes",
+    scrollEffect: false,
   },
   {
     label: "Shop",
     href: "/shop",
+    scrollEffect: true,
   },
 ];
 
@@ -109,7 +113,7 @@ export const Header = () => {
           className="absolute inset-x-0 top-0 z-10 bg-black shadow-sm backdrop-blur-sm transition-transform"
           style={{
             height: "100%",
-            transform: `scaleY(${scrollProgress})`,
+            transform: `scaleY(${navItemsWithActive.some((item) => item.isActive && item.scrollEffect) ? scrollProgress : 1})`,
             transformOrigin: "top",
           }}
         />
