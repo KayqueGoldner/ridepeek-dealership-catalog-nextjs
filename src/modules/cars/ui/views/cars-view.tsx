@@ -1,24 +1,54 @@
 "use client";
 
-import { useSuspenseQuery } from "@tanstack/react-query";
+import {
+  useSuspenseInfiniteQuery,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 
 import { useTRPC } from "@/trpc/client";
+import { DEFAULT_LIMIT } from "@/constants";
+import { Button } from "@/components/ui/button";
 
 import { HeaderSection } from "../sections/header-section";
 import { CarsListSection } from "../sections/cars-list-section";
 
 export const CarsView = () => {
   const trpc = useTRPC();
-  const { data, isLoading } = useSuspenseQuery(
-    trpc.cars.getMany.queryOptions(),
-  );
+  const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } =
+    useSuspenseInfiniteQuery(
+      trpc.cars.getMany.infiniteQueryOptions(
+        {
+          limit: DEFAULT_LIMIT,
+        },
+        {
+          getNextPageParam: (lastPage) => {
+            return lastPage.cars.length > 0 ? lastPage.nextPage : undefined;
+          },
+        },
+      ),
+    );
+
+  const { data: manufacturers, isLoading: isManufacturersLoading } =
+    useSuspenseQuery(trpc.cars.getManufacturers.queryOptions());
 
   if (isLoading) return <div>Loading...</div>;
 
   return (
     <main className="h-full px-10 pt-28 pb-24 md:px-16 lg:px-28">
-      <HeaderSection manufacturers={data.manufacturers} />
-      <CarsListSection cars={data.cars} />
+      <HeaderSection manufacturers={manufacturers.docs} />
+      <CarsListSection cars={data.pages.flatMap((page) => page.cars)} />
+      {hasNextPage && (
+        <div className="flex justify-center pt-8">
+          <Button
+            variant="outline"
+            disabled={isFetchingNextPage}
+            onClick={() => fetchNextPage()}
+            className="cursor-pointer"
+          >
+            Load more
+          </Button>
+        </div>
+      )}
     </main>
   );
 };
