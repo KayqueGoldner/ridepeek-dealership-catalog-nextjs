@@ -7,7 +7,7 @@ export const Manufacturers: CollectionConfig = {
   },
   admin: {
     useAsTitle: "name",
-    defaultColumns: ["name", "country"],
+    defaultColumns: ["name", "country", "vehicleTypes"],
   },
   fields: [
     {
@@ -39,6 +39,20 @@ export const Manufacturers: CollectionConfig = {
       type: "richText",
       admin: {
         description: "A brief description of the manufacturer",
+      },
+    },
+    {
+      name: "vehicleTypes",
+      type: "select",
+      required: true,
+      hasMany: false,
+      options: [
+        { label: "Cars", value: "cars" },
+        { label: "Motorcycles", value: "motorcycles" },
+        { label: "Both", value: "both" },
+      ],
+      admin: {
+        description: "Vehicle types manufactured by this manufacturer",
       },
     },
   ],

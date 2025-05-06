@@ -8,7 +8,11 @@ import { DEFAULT_LIMIT } from "@/constants";
 const CarsPage = () => {
   const queryClient = getQueryClient();
 
-  void queryClient.prefetchQuery(trpc.cars.getManufacturers.queryOptions());
+  void queryClient.prefetchQuery(
+    trpc.manufacturers.getByType.queryOptions({
+      type: "cars",
+    }),
+  );
   void queryClient.prefetchInfiniteQuery(
     trpc.cars.getMany.infiniteQueryOptions({
       limit: DEFAULT_LIMIT,

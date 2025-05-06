@@ -319,6 +319,10 @@ export interface Manufacturer {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Vehicle types manufactured by this manufacturer
+   */
+  vehicleTypes: 'cars' | 'motorcycles' | 'both';
   updatedAt: string;
   createdAt: string;
 }
@@ -629,6 +633,7 @@ export interface ManufacturersSelect<T extends boolean = true> {
   country?: T;
   logo?: T;
   description?: T;
+  vehicleTypes?: T;
   updatedAt?: T;
   createdAt?: T;
 }

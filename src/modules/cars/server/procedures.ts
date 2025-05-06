@@ -30,11 +30,4 @@ export const carsRouter = createTRPCRouter({
         nextPage: cars.nextPage,
       };
     }),
-  getManufacturers: baseProcedure.query(async ({ ctx }) => {
-    const manufacturers = await ctx.payload.find({
-      collection: "manufacturers",
-    });
-
-    return manufacturers;
-  }),
 });

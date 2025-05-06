@@ -21,6 +21,11 @@ export const Motorcycles: CollectionConfig = {
       relationTo: ["manufacturers"],
       hasMany: false,
       required: true,
+      filterOptions: {
+        vehicleTypes: {
+          in: ["motorcycles", "both"],
+        },
+      },
       admin: {
         description: "Select an existing manufacturer or create a new one",
         allowCreate: true,
