@@ -29,13 +29,17 @@ export const CarsView = () => {
     );
 
   const { data: manufacturers, isLoading: isManufacturersLoading } =
-    useSuspenseQuery(trpc.cars.getManufacturers.queryOptions());
+    useSuspenseQuery(
+      trpc.manufacturers.getByType.queryOptions({
+        type: "cars",
+      }),
+    );
 
   if (isLoading) return <div>Loading...</div>;
 
   return (
     <main className="h-full px-10 pt-28 pb-24 md:px-16 lg:px-28">
-      <HeaderSection manufacturers={manufacturers.docs} />
+      <HeaderSection manufacturers={manufacturers} />
       <CarsListSection cars={data.pages.flatMap((page) => page.cars)} />
       {hasNextPage && (
         <div className="flex justify-center pt-8">
