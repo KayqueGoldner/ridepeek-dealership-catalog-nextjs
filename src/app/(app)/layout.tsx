@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 
 import { Header } from "@/components/header";
 import { TRPCReactProvider } from "@/trpc/client";
@@ -25,8 +26,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter.className} antialiased`}>
         <TRPCReactProvider>
-          <Header />
-          {children}
+          <NuqsAdapter>
+            <Header />
+            {children}
+          </NuqsAdapter>
         </TRPCReactProvider>
       </body>
     </html>
