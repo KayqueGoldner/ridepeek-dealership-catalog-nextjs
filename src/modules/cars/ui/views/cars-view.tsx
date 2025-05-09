@@ -12,13 +12,18 @@ import { Button } from "@/components/ui/button";
 import { HeaderSection } from "../sections/header-section";
 import { CarsListSection } from "../sections/cars-list-section";
 
-export const CarsView = () => {
+interface CarsViewProps {
+  manufacturer?: string;
+}
+
+export const CarsView = ({ manufacturer }: CarsViewProps) => {
   const trpc = useTRPC();
   const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } =
     useSuspenseInfiniteQuery(
       trpc.cars.getMany.infiniteQueryOptions(
         {
           limit: DEFAULT_LIMIT,
+          manufacturer,
         },
         {
           getNextPageParam: (lastPage) => {
@@ -36,6 +41,8 @@ export const CarsView = () => {
     );
 
   if (isLoading) return <div>Loading...</div>;
+
+  console.log(data);
 
   return (
     <main className="h-full px-10 pt-28 pb-24 md:px-16 lg:px-28">

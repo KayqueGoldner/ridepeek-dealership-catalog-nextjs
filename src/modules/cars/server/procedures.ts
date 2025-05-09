@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
+import { Where } from "payload";
 
 import { DEFAULT_LIMIT } from "@/constants";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
@@ -10,20 +11,32 @@ export const carsRouter = createTRPCRouter({
       z.object({
         cursor: z.number().default(1),
         limit: z.number().default(DEFAULT_LIMIT),
+        manufacturer: z.string().optional(),
       }),
     )
     .query(async ({ ctx, input }) => {
-      const { cursor, limit } = input;
+      const { cursor, limit, manufacturer } = input;
+
+      let where: Where = {};
+
+      if (manufacturer) {
+        where = {
+          make: {
+            equals: {
+              relationTo: "manufacturers",
+              value: manufacturer,
+            },
+          },
+        };
+      }
 
       const cars = await ctx.payload.find({
         collection: "cars",
         limit,
         page: cursor,
         sort: "-createdAt",
+        where,
       });
-
-      if (!cars.docs.length)
-        throw new TRPCError({ code: "NOT_FOUND", message: "No cars found" });
 
       return {
         cars: cars.docs,
