@@ -8,13 +8,12 @@ import { DEFAULT_LIMIT } from "@/constants";
 interface CarsPageProps {
   searchParams: Promise<{
     manufacturer?: string;
+    search?: string;
   }>;
 }
 
 const CarsPage = async ({ searchParams }: CarsPageProps) => {
-  const { manufacturer } = await searchParams;
-
-  console.log(manufacturer);
+  const { manufacturer, search } = await searchParams;
 
   const queryClient = getQueryClient();
 
@@ -27,13 +26,14 @@ const CarsPage = async ({ searchParams }: CarsPageProps) => {
     trpc.cars.getMany.infiniteQueryOptions({
       limit: DEFAULT_LIMIT,
       manufacturer,
+      search,
     }),
   );
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Suspense fallback={<div>Loading...</div>}>
-        <CarsView manufacturer={manufacturer} />
+        <CarsView manufacturer={manufacturer} search={search} />
       </Suspense>
     </HydrationBoundary>
   );

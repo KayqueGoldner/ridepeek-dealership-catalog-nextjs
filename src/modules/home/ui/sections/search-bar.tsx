@@ -1,22 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoFilterOutline, IoSearchOutline } from "react-icons/io5";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { serialize } from "@/lib/search-params";
 
-export const SearchBar = () => {
+interface SearchBarProps {
+  pathname?: string;
+}
+
+export const SearchBar = ({ pathname = "/cars" }: SearchBarProps) => {
   const [query, setQuery] = useState("");
+  const searchParams = useSearchParams();
   const router = useRouter();
 
-  const handleSearch = () => {
-    if (!query.trim()) return;
+  const handleSearch = (value: string) => {
+    const url = serialize(pathname, {
+      ...Object.fromEntries(searchParams.entries()),
+      search: value,
+    });
 
-    const url = `/cars?search=${query}`;
     router.push(url);
   };
+
+  useEffect(() => {
+    setQuery(searchParams.get("search") || "");
+  }, [searchParams]);
 
   return (
     <div className="p-5 md:py-10">
@@ -25,10 +37,16 @@ export const SearchBar = () => {
           className="h-12 flex-1 rounded-full border border-black pr-3 pl-5 !text-lg md:h-16"
           placeholder="Search"
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
+          onChange={(e) => {
+            if (!e.target.value) {
+              handleSearch("");
+            }
+
+            setQuery(e.target.value);
+          }}
           onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handleSearch();
+            if (e.key === "Enter" && query.trim()) {
+              handleSearch(query);
             }
           }}
         />
@@ -36,7 +54,7 @@ export const SearchBar = () => {
           variant="outline"
           size="lg"
           className="size-12 cursor-pointer rounded-full border-black md:size-16"
-          onClick={handleSearch}
+          onClick={() => handleSearch(query)}
           aria-label="Search"
         >
           <IoSearchOutline className="size-5 md:size-6" />

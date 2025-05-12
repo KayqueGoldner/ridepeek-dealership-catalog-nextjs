@@ -14,9 +14,10 @@ import { CarsListSection } from "../sections/cars-list-section";
 
 interface CarsViewProps {
   manufacturer?: string;
+  search?: string;
 }
 
-export const CarsView = ({ manufacturer }: CarsViewProps) => {
+export const CarsView = ({ manufacturer, search }: CarsViewProps) => {
   const trpc = useTRPC();
   const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } =
     useSuspenseInfiniteQuery(
@@ -24,6 +25,7 @@ export const CarsView = ({ manufacturer }: CarsViewProps) => {
         {
           limit: DEFAULT_LIMIT,
           manufacturer,
+          search,
         },
         {
           getNextPageParam: (lastPage) => {
@@ -41,8 +43,6 @@ export const CarsView = ({ manufacturer }: CarsViewProps) => {
     );
 
   if (isLoading) return <div>Loading...</div>;
-
-  console.log(data);
 
   return (
     <main className="h-full px-10 pt-28 pb-24 md:px-16 lg:px-28">

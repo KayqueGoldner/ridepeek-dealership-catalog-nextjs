@@ -12,22 +12,25 @@ export const carsRouter = createTRPCRouter({
         cursor: z.number().default(1),
         limit: z.number().default(DEFAULT_LIMIT),
         manufacturer: z.string().optional(),
+        search: z.string().optional(),
       }),
     )
     .query(async ({ ctx, input }) => {
-      const { cursor, limit, manufacturer } = input;
+      const { cursor, limit, manufacturer, search } = input;
 
       let where: Where = {};
 
       if (manufacturer) {
-        where = {
-          make: {
-            equals: {
-              relationTo: "manufacturers",
-              value: manufacturer,
-            },
+        where["make"] = {
+          equals: {
+            relationTo: "manufacturers",
+            value: manufacturer,
           },
         };
+      }
+
+      if (search) {
+        where["name"] = { contains: search };
       }
 
       const cars = await ctx.payload.find({
