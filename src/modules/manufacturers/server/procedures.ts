@@ -32,23 +32,14 @@ export const manufacturersRouter = createTRPCRouter({
 
       if (type === "both") {
         query = {
-          and: [
-            {
-              vehicleTypes: {
-                contains: "cars",
-              },
-            },
-            {
-              vehicleTypes: {
-                contains: "motorcycles",
-              },
-            },
-          ],
+          vehicleTypes: {
+            in: ["motorcycles", "cars", "both"],
+          },
         };
       } else {
         query = {
           vehicleTypes: {
-            contains: type,
+            in: ["both", type],
           },
         };
       }
@@ -57,13 +48,6 @@ export const manufacturersRouter = createTRPCRouter({
         collection: "manufacturers",
         where: query,
       });
-
-      if (!manufacturers.docs.length) {
-        throw new TRPCError({
-          code: "NOT_FOUND",
-          message: `No manufacturers found for vehicle type: ${type}`,
-        });
-      }
 
       return manufacturers.docs;
     }),
