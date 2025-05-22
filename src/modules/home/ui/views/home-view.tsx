@@ -24,10 +24,13 @@ export const HomeView = () => {
   const { data: bikes, isLoading: bikesLoading } = useSuspenseQuery(
     trpc.home.getBikes.queryOptions(),
   );
+  const { data: heroItems, isLoading: heroItemsLoading } = useSuspenseQuery(
+    trpc.hero.getMany.queryOptions(),
+  );
 
   return (
     <main className="h-full pb-24">
-      <Hero />
+      <Hero data={heroItems} isLoading={heroItemsLoading} />
       <SearchBar />
       <CarsList cars={cars?.docs || []} isLoading={carsLoading || !isMounted} />
       <BikesList

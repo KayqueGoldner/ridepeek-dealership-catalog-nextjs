@@ -1,6 +1,7 @@
 import useEmblaCarousel from "embla-carousel-react";
 import React, { useState, useEffect, useCallback } from "react";
 import { EmblaOptionsType } from "embla-carousel";
+import { Loader2Icon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { SliderContext } from "@/hooks/use-carousel-context";
@@ -13,6 +14,7 @@ interface SliderProps<T> extends React.HTMLAttributes<HTMLDivElement> {
   containerClassName?: string;
   itemClassName?: string;
   emblaOptions?: EmblaOptionsType;
+  isLoading?: boolean;
 }
 
 export const Slider = <T,>({
@@ -24,6 +26,7 @@ export const Slider = <T,>({
   children,
   emblaOptions = { loop: true },
   itemClassName,
+  isLoading = false,
   ...props
 }: SliderProps<T> & { children?: React.ReactNode }) => {
   const [emblaRef, emblaApi] = useEmblaCarousel(emblaOptions);
@@ -76,6 +79,17 @@ export const Slider = <T,>({
     scrollSnaps,
     scrollTo,
   };
+
+  if (isLoading) {
+    return (
+      <div
+        className="embla flex size-full items-center justify-center"
+        {...props}
+      >
+        <Loader2Icon className="size-10 animate-spin text-white" />
+      </div>
+    );
+  }
 
   return (
     <SliderContext.Provider value={contextValue}>

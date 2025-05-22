@@ -165,9 +165,9 @@ export interface Media {
  */
 export interface Hero {
   id: string;
-  title: string;
-  description: string;
-  image?: (string | null) | Media;
+  title?: string | null;
+  description?: string | null;
+  image: string | Media;
   cta?:
     | {
         label: string;
