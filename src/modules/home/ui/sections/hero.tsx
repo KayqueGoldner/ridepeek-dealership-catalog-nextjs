@@ -1,38 +1,52 @@
 import Image from "next/image";
+import Link from "next/link";
 
 import { Slider } from "@/components/slider";
 import { SliderArrows, SliderCount } from "@/components/slider/slider-controls";
 import { SliderParallax } from "@/components/slider/slider-parallax";
+import { HeroGetManyOutput } from "@/modules/hero/types";
+import { Button } from "@/components/ui/button";
 
-export const Hero = () => {
-  const items = [
-    {
-      id: 1,
-      image:
-        "https://plus.unsplash.com/premium_photo-1721268770804-f9db0ce102f8",
-    },
-    {
-      id: 2,
-      image: "https://images.unsplash.com/photo-1534796636912-3b95b3ab5986",
-    },
-    {
-      id: 3,
-      image:
-        "https://plus.unsplash.com/premium_photo-1690481529191-1ad78d50daac",
-    },
-  ];
+interface HeroProps {
+  data: HeroGetManyOutput;
+  isLoading: boolean;
+}
+
+export const Hero = ({ data, isLoading }: HeroProps) => {
+  const items = data.docs.map((doc) => doc);
 
   const SliderItem = ({ item }: { item: (typeof items)[number] }) => {
     return (
       <div className="embla__parallax size-full">
         <div className="embla__parallax__layer size-full">
           <Image
-            src={item.image}
-            width={1980}
-            height={1080}
-            alt={item.id.toString()}
+            src={item.image.url!}
+            width={item.image.width ?? 1980}
+            height={item.image.height ?? 1080}
+            alt={item.image.alt}
             className="embla__slide__img size-full object-cover"
           />
+          <div className="absolute inset-x-20 top-20 flex flex-col gap-5 sm:top-30">
+            {item.title && (
+              <h1 className="line-clamp-2 text-3xl font-bold text-white sm:text-4xl md:text-5xl">
+                {item.title}
+              </h1>
+            )}
+            {item.description && (
+              <p className="line-clamp-3 text-base font-medium text-white sm:text-lg">
+                {item.description}
+              </p>
+            )}
+            <div className="flex flex-wrap gap-2">
+              {item.cta &&
+                item.cta.length > 0 &&
+                item.cta.map((cta, index) => (
+                  <Button key={cta.id ?? index} variant="secondary" asChild>
+                    <Link href={cta.url}>{cta.label}</Link>
+                  </Button>
+                ))}
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -42,6 +56,7 @@ export const Hero = () => {
     <section className="relative h-96 bg-cyan-900 md:h-screen">
       <Slider
         items={items}
+        isLoading={isLoading}
         renderItem={(item) => <SliderItem item={item} />}
         getItemId={(item) => item.id}
         containerClassName="h-full"
