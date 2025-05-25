@@ -6,7 +6,7 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 
 import { Hero } from "../sections/hero";
-import { SearchBar } from "../sections/search-bar";
+import { SearchBar } from "../../../../components/search-bar";
 import { CarsList } from "../sections/cars-list";
 import { BikesList } from "../sections/bikes-list";
 

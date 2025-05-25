@@ -1,16 +1,29 @@
-import { createSerializer, parseAsString } from "nuqs/server";
+import {
+  parseAsString,
+  parseAsInteger,
+  createLoader,
+  type inferParserType,
+  createSerializer,
+} from "nuqs/server";
 
-const stringValue = parseAsString
-  .withOptions({
-    clearOnDefault: true,
-    history: "replace",
-    shallow: true,
-  })
+const stringOption = parseAsString
+  .withOptions({ clearOnDefault: true })
   .withDefault("");
+const integerOption = parseAsInteger
+  .withOptions({ clearOnDefault: true })
+  .withDefault(0);
 
-export const searchParams = {
-  search: stringValue,
-  manufacturer: stringValue,
+export const carsSearchParams = {
+  manufacturers: stringOption,
+  search: stringOption,
+  minYear: integerOption,
+  maxYear: integerOption,
+  minPrice: integerOption,
+  maxPrice: integerOption,
 };
 
-export const serialize = createSerializer(searchParams);
+export const loadCarsSearchParams = createLoader(carsSearchParams);
+
+export type carsSearchParamsType = inferParserType<typeof carsSearchParams>;
+
+export const serialize = createSerializer(carsSearchParams);

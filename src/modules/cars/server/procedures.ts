@@ -13,10 +13,25 @@ export const carsRouter = createTRPCRouter({
         limit: z.number().default(DEFAULT_LIMIT),
         manufacturer: z.string().optional(),
         search: z.string().optional(),
+        manufacturers: z.string().optional(),
+        minYear: z.number().optional(),
+        maxYear: z.number().optional(),
+        minPrice: z.number().optional(),
+        maxPrice: z.number().optional(),
       }),
     )
     .query(async ({ ctx, input }) => {
-      const { cursor, limit, manufacturer, search } = input;
+      const {
+        cursor,
+        limit,
+        manufacturer,
+        search,
+        manufacturers,
+        maxPrice,
+        maxYear,
+        minPrice,
+        minYear,
+      } = input;
 
       let where: Where = {};
 
@@ -29,8 +44,41 @@ export const carsRouter = createTRPCRouter({
         };
       }
 
+      if (manufacturers) {
+        const manufacturersIds = manufacturers.split(",");
+
+        where["make"] = {
+          in: manufacturersIds.map((id) => ({
+            relationTo: "manufacturers",
+            value: id,
+          })),
+        };
+      }
+
       if (search) {
         where["name"] = { contains: search };
+      }
+
+      if (maxPrice) {
+        where["price"] = {
+          ...(where.price ?? {}),
+          less_than_equal: maxPrice,
+        };
+      }
+
+      if (minPrice) {
+        where["price"] = {
+          ...(where.price ?? {}),
+          greater_than_equal: minPrice,
+        };
+      }
+
+      if (maxYear) {
+        where["year"] = { ...(where.year ?? {}), less_than_equal: maxYear };
+      }
+
+      if (minYear) {
+        where["year"] = { ...(where.year ?? {}), greater_than_equal: minYear };
       }
 
       const cars = await ctx.payload.find({
