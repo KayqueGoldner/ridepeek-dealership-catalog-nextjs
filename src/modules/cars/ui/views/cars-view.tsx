@@ -8,24 +8,23 @@ import {
 import { useTRPC } from "@/trpc/client";
 import { DEFAULT_LIMIT } from "@/constants";
 import { Button } from "@/components/ui/button";
+import { carsSearchParamsType } from "@/lib/search-params";
 
 import { HeaderSection } from "../sections/header-section";
 import { CarsListSection } from "../sections/cars-list-section";
 
 interface CarsViewProps {
-  manufacturer?: string;
-  search?: string;
+  searchParams: carsSearchParamsType;
 }
 
-export const CarsView = ({ manufacturer, search }: CarsViewProps) => {
+export const CarsView = ({ searchParams }: CarsViewProps) => {
   const trpc = useTRPC();
   const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } =
     useSuspenseInfiniteQuery(
       trpc.cars.getMany.infiniteQueryOptions(
         {
           limit: DEFAULT_LIMIT,
-          manufacturer,
-          search,
+          ...searchParams,
         },
         {
           getNextPageParam: (lastPage) => {

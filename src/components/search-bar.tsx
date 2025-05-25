@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { IoFilterOutline, IoSearchOutline } from "react-icons/io5";
+import { IoSearchOutline } from "react-icons/io5";
 import { useRouter, useSearchParams } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { serialize } from "@/lib/search-params";
+import { SearchBarFilter } from "@/components/search-bar-filter";
 
 interface SearchBarProps {
   pathname?: string;
@@ -59,14 +60,7 @@ export const SearchBar = ({ pathname = "/cars" }: SearchBarProps) => {
         >
           <IoSearchOutline className="size-5 md:size-6" />
         </Button>
-        <Button
-          variant="outline"
-          size="lg"
-          className="size-12 cursor-pointer rounded-full border-black md:size-16"
-          aria-label="Filter"
-        >
-          <IoFilterOutline className="size-5 md:size-6" />
-        </Button>
+        <SearchBarFilter pathname={pathname} />
       </div>
     </div>
   );

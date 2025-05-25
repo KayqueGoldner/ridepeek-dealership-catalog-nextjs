@@ -1,6 +1,6 @@
 import { Manufacturer } from "@/payload-types";
 
-import { SearchBar } from "@/modules/home/ui/sections/search-bar";
+import { SearchBar } from "@/components/search-bar";
 import { ManufacturersFilter } from "@/modules/manufacturers/ui/components/manufacturers-filter";
 
 interface HeaderSectionProps {
