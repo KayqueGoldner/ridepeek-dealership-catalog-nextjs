@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { useQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 
-import { serialize } from "@/lib/search-params";
+import { carsSerialize } from "@/lib/search-params";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -66,7 +66,7 @@ export const SearchBarFilter = ({ pathname }: SearchBarFilterProps) => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const url = serialize(pathname, {
+    const url = carsSerialize(pathname, {
       ...values,
       manufacturers: values.manufacturers?.toString() ?? "",
     });
