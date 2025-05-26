@@ -8,27 +8,23 @@ import {
 import { useTRPC } from "@/trpc/client";
 import { DEFAULT_LIMIT } from "@/constants";
 import { Button } from "@/components/ui/button";
+import { motorcyclesSearchParamsType } from "@/lib/search-params";
 
 import { HeaderSection } from "../sections/header-section";
 import { MotorcycleListSection } from "../sections/motorcycle-list-section";
 
 interface MotorcyclesViewProps {
-  manufacturer?: string;
-  search?: string;
+  searchParams: motorcyclesSearchParamsType;
 }
 
-export const MotorcyclesView = ({
-  manufacturer,
-  search,
-}: MotorcyclesViewProps) => {
+export const MotorcyclesView = ({ searchParams }: MotorcyclesViewProps) => {
   const trpc = useTRPC();
   const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } =
     useSuspenseInfiniteQuery(
       trpc.bikes.getMany.infiniteQueryOptions(
         {
           limit: DEFAULT_LIMIT,
-          manufacturer,
-          search,
+          ...searchParams,
         },
         {
           getNextPageParam: (lastPage) => {

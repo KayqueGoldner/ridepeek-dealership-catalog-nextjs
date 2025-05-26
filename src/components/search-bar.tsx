@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { serialize } from "@/lib/search-params";
+import { carsSerialize } from "@/lib/search-params";
 import { SearchBarFilter } from "@/components/search-bar-filter";
 
 interface SearchBarProps {
@@ -19,7 +19,7 @@ export const SearchBar = ({ pathname = "/cars" }: SearchBarProps) => {
   const router = useRouter();
 
   const handleSearch = (value: string) => {
-    const url = serialize(pathname, {
+    const url = carsSerialize(pathname, {
       ...Object.fromEntries(searchParams.entries()),
       search: value,
     });
