@@ -4,6 +4,7 @@ import { Where } from "payload";
 
 import { DEFAULT_LIMIT } from "@/constants";
 import { baseProcedure, createTRPCRouter } from "@/trpc/init";
+import { Manufacturer, Media } from "@/payload-types";
 
 export const carsRouter = createTRPCRouter({
   getMany: baseProcedure
@@ -92,6 +93,39 @@ export const carsRouter = createTRPCRouter({
       return {
         cars: cars.docs,
         nextPage: cars.nextPage,
+      };
+    }),
+  getOne: baseProcedure
+    .input(
+      z.object({
+        id: z.string(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const { id } = input;
+
+      const car = await ctx.payload.findByID({
+        collection: "cars",
+        id,
+      });
+
+      if (!car) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Car not found",
+        });
+      }
+
+      const images = car.images
+        ? car.images.map((image) => ({ ...image, image: image.image as Media }))
+        : [];
+      const primaryImage = images.find((image) => image.primary);
+
+      return {
+        ...car,
+        make: car.make.value as Manufacturer,
+        images,
+        primaryImage,
       };
     }),
 });
