@@ -84,17 +84,19 @@ const BikeCard = ({ bike }: { bike: Motorcycle }) => {
       : bike.images?.[0]?.image?.url;
 
   return (
-    <div className="size-full">
-      <Image
-        src={image || ""}
-        alt={bike.images?.[0]?.caption || ""}
-        width={760}
-        height={760}
-        className="aspect-video w-full object-cover"
-      />
-      <div className="py-5 text-center">
-        <h1 className="text-xl font-bold">{bike.name}</h1>
+    <Link href={`/bikes/${bike.id}`}>
+      <div className="size-full">
+        <Image
+          src={image || ""}
+          alt={bike.images?.[0]?.caption || ""}
+          width={760}
+          height={760}
+          className="aspect-video w-full object-cover"
+        />
+        <div className="py-5 text-center">
+          <h1 className="text-xl font-bold">{bike.name}</h1>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 };

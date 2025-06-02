@@ -14,7 +14,7 @@ export const MotorcycleCard = ({ motorcycle }: CarCardProps) => {
 
   return (
     <div className="group relative flex-1 overflow-hidden">
-      <Link href={`/cars/${motorcycle.id}`}>
+      <Link href={`/bikes/${motorcycle.id}`}>
         <Image
           src={(image && image.url) || ""}
           alt={motorcycle.name}
