@@ -84,17 +84,19 @@ const CarCard = ({ car }: { car: Car }) => {
       : car.images?.[0]?.image?.url;
 
   return (
-    <div className="size-full">
-      <Image
-        src={image || ""}
-        alt={car.images?.[0]?.caption || ""}
-        width={760}
-        height={760}
-        className="aspect-video w-full object-cover"
-      />
-      <div className="py-5 text-center">
-        <h1 className="text-xl font-bold">{car.name}</h1>
+    <Link href={`/cars/${car.id}`}>
+      <div className="size-full">
+        <Image
+          src={image || ""}
+          alt={car.images?.[0]?.caption || ""}
+          width={760}
+          height={760}
+          className="aspect-video w-full object-cover"
+        />
+        <div className="py-5 text-center">
+          <h1 className="text-xl font-bold">{car.name}</h1>
+        </div>
       </div>
-    </div>
+    </Link>
   );
 };
