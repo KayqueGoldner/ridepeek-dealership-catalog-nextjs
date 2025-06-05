@@ -12,6 +12,7 @@ import {
 } from "@/components/list-hover-effect";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { ContactLink } from "@/components/contact-link";
 
 const navItems = [
   {
@@ -151,7 +152,7 @@ export const Header = () => {
             className="hidden h-12 w-32 rounded-full bg-transparent text-base text-white hover:bg-white/10 hover:text-white md:flex"
             asChild
           >
-            <Link href="mailto:contact@ridepeek.com">Contact</Link>
+            <ContactLink>Contact</ContactLink>
           </Button>
 
           <Button
