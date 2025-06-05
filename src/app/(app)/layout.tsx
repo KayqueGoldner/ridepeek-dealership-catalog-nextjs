@@ -2,9 +2,12 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
+import { MailIcon } from "lucide-react";
 
 import { Header } from "@/components/header";
 import { TRPCReactProvider } from "@/trpc/client";
+import { ContactLink } from "@/components/contact-link";
+import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -29,6 +32,14 @@ export default function RootLayout({
           <NuqsAdapter>
             <Header />
             {children}
+            <Button
+              className="fixed right-12 bottom-12 size-16 rounded-full"
+              asChild
+            >
+              <ContactLink>
+                <MailIcon className="size-5" />
+              </ContactLink>
+            </Button>
           </NuqsAdapter>
         </TRPCReactProvider>
       </body>
