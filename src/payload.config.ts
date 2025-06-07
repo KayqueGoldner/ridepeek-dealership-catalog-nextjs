@@ -14,6 +14,7 @@ import { Hero } from "./collections/Hero";
 import { Cars } from "./collections/Cars";
 import { Manufacturers } from "./collections/Manufacturers";
 import { Motorcycles } from "./collections/Motorcycles";
+import { Products } from "./collections/Products";
 
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -25,7 +26,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Hero, Cars, Manufacturers, Motorcycles],
+  collections: [Users, Media, Hero, Cars, Manufacturers, Motorcycles, Products],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",
   typescript: {

@@ -73,6 +73,7 @@ export interface Config {
     cars: Car;
     manufacturers: Manufacturer;
     motorcycles: Motorcycle;
+    products: Product;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -85,6 +86,7 @@ export interface Config {
     cars: CarsSelect<false> | CarsSelect<true>;
     manufacturers: ManufacturersSelect<false> | ManufacturersSelect<true>;
     motorcycles: MotorcyclesSelect<false> | MotorcyclesSelect<true>;
+    products: ProductsSelect<false> | ProductsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -446,6 +448,53 @@ export interface Motorcycle {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products".
+ */
+export interface Product {
+  id: string;
+  /**
+   * The name of the product
+   */
+  name: string;
+  /**
+   * A brief description of the product
+   */
+  description?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Product images
+   */
+  images: {
+    image: string | Media;
+    caption?: string | null;
+    /**
+     * Use this image as the main image for the product
+     */
+    primary?: boolean | null;
+    id?: string | null;
+  }[];
+  /**
+   * Price in dollars (USD)
+   */
+  price: number;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
@@ -474,6 +523,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'motorcycles';
         value: string | Motorcycle;
+      } | null)
+    | ({
+        relationTo: 'products';
+        value: string | Product;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -676,6 +729,25 @@ export interface MotorcyclesSelect<T extends boolean = true> {
         primary?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "products_select".
+ */
+export interface ProductsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  images?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        primary?: T;
+        id?: T;
+      };
+  price?: T;
   updatedAt?: T;
   createdAt?: T;
 }
