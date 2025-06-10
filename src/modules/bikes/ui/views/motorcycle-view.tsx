@@ -7,16 +7,16 @@ import { RichText } from "@payloadcms/richtext-lexical/react";
 import { useTRPC } from "@/trpc/client";
 import { jsxConverters } from "@/components/jsx-converter";
 
-interface BikeViewProps {
-  bikeId: string;
+interface MotorcycleViewProps {
+  motorcycleId: string;
 }
 
-export const BikeView = ({ bikeId }: BikeViewProps) => {
+export const MotorcycleView = ({ motorcycleId }: MotorcycleViewProps) => {
   const trpc = useTRPC();
 
   const { data, isLoading } = useSuspenseQuery(
     trpc.bikes.getOne.queryOptions({
-      id: bikeId,
+      id: motorcycleId,
     }),
   );
 

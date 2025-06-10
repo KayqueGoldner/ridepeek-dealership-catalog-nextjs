@@ -2,32 +2,24 @@ import { Suspense } from "react";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 
 import { getQueryClient, trpc } from "@/trpc/server";
-import { MotorcycleView } from "@/modules/bikes/ui/views/motorcycle-view";
+import { ShopView } from "@/modules/shop/ui/views/shop-view";
 
-interface bikeIdPageProps {
-  params: Promise<{
-    bikeId: string;
-  }>;
-}
-
-const bikeIdPage = async ({ params }: bikeIdPageProps) => {
-  const { bikeId } = await params;
-
+const ShopPage = async () => {
   const queryClient = getQueryClient();
 
   void queryClient.prefetchQuery(
-    trpc.bikes.getOne.queryOptions({
-      id: bikeId,
+    trpc.manufacturers.getByType.queryOptions({
+      type: "cars",
     }),
   );
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Suspense fallback={<div>Loading...</div>}>
-        <MotorcycleView motorcycleId={bikeId} />
+        <ShopView />
       </Suspense>
     </HydrationBoundary>
   );
 };
 
-export default bikeIdPage;
+export default ShopPage;
