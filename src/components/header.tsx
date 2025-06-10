@@ -33,7 +33,7 @@ const navItems = [
   {
     label: "Shop",
     href: "/shop",
-    scrollEffect: true,
+    scrollEffect: false,
   },
 ];
 
